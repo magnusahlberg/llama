@@ -77,6 +77,11 @@ func indexHandler(request: RouterRequest, response: RouterResponse, next: () -> 
 
 loadArticles()
 router.get("/", handler: indexHandler)
+router.get("/tossCache") { request, response, next in
+	articles.removeAll()
+	try response.redirect("/")
+	next()
+}
 router.all("/assets", middleware: StaticFileServer(path: "./assets"))
 
 Kitura.addHTTPServer(onPort: 8090, with: router)
